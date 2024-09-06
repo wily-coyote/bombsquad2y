@@ -1,0 +1,6 @@
+.junk/
+build/*.sfd
+build/*.otf
+build/*.ttf
+build/*.zip
+build/**/

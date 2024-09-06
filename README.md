@@ -9,7 +9,7 @@ You need:
 - FontForge
 - Python 3
 
-In a Linux (or WSL):
+In Linux (or WSL):
 ```sh
 cd build
 ./remap.sh

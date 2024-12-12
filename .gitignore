@@ -2,5 +2,7 @@
 build/*.sfd
 build/*.otf
 build/*.ttf
+build/*.bdf
+build/*.fon
 build/*.zip
 build/**/

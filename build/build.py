@@ -85,6 +85,8 @@ def makeFont(folder, name, output, width=1):
 
 	for k in font.layers:
 		font.layers[k].is_quadratic = True
+	
+	codepoints = []
 
 	for bmp in os.listdir(folder):
 		print(bmp[3:7], end="\r")
@@ -94,20 +96,33 @@ def makeFont(folder, name, output, width=1):
 		glyph.importOutlines(folder+"/"+bmp)
 		glyph.autoTrace()
 		glyph.width = int(1600*width)
+		codepoints.append(codepoint)
 
 	for codepoint in [0x0020, 0x00A0]:
 		print("%04x" % codepoint, end="\r")
 		glyph = font.createChar(codepoint)
 		glyph.manualHints = True
 		glyph.width = int(1600*width)
+		codepoints.append(codepoint)
 
+	font.bitmapSizes = ((16,),)
+	font.selection.select(("unicode",),*codepoints)
+	font.regenBitmaps( font.bitmapSizes )
+	font.selection.none()
 	font.save(output)
 	ttf = output.replace(".sfd", ".ttf")
 	otf = output.replace(".sfd", ".otf")
-	font.generate(ttf)
-	font.generate(otf)
+	bdf = output.replace(".sfd", ".bdf")
+	fon = output.replace(".sfd", ".fon")
+	font.generate(ttf, bitmap_type="ttf", bitmap_resolution=72)
+	font.generate(otf, bitmap_type="otf", bitmap_resolution=72)
+	font.generate(bdf, bitmap_type="bdf", bitmap_resolution=72)
+	font.generate(fon, bitmap_type="fon", bitmap_resolution=72)
+	os.rename(bdf.replace(".bdf","-16.bdf"), bdf) # fontforge don't do that
 	outputs.append(ttf)
 	outputs.append(otf)
+	outputs.append(bdf)
+	outputs.append(fon)
 	font.close()
 
 makeFont("upscaled", "Bombsquad", "Bombsquad.sfd")

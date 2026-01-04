@@ -18,6 +18,7 @@ import fontforge
 import os
 import zipfile
 
+os.chdir("build")
 outputs = []
 
 def makeFont(folder, name, output, width=1):
@@ -83,8 +84,8 @@ def makeFont(folder, name, output, width=1):
 
 	font.encoding = "unicode"
 
-	for k in font.layers:
-		font.layers[k].is_quadratic = True
+	# for k in font.layers:
+	# 	font.layers[k].is_quadratic = True
 	
 	codepoints = []
 
@@ -105,22 +106,25 @@ def makeFont(folder, name, output, width=1):
 		glyph.width = int(1600*width)
 		codepoints.append(codepoint)
 
-	font.bitmapSizes = ((16,),)
+	font.bitmapSizes = (16,)
 	font.selection.select(("unicode",),*codepoints)
-	font.regenBitmaps( font.bitmapSizes )
+	font.regenBitmaps( 16 )
 	font.selection.none()
 	font.save(output)
 	ttf = output.replace(".sfd", ".ttf")
 	otf = output.replace(".sfd", ".otf")
+	otb = output.replace(".sfd", ".otb")
 	bdf = output.replace(".sfd", ".bdf")
 	fon = output.replace(".sfd", ".fon")
 	font.generate(ttf, bitmap_type="ttf", bitmap_resolution=72)
 	font.generate(otf, bitmap_type="otf", bitmap_resolution=72)
+	font.generate(otb, bitmap_type="otb", bitmap_resolution=72)
 	font.generate(bdf, bitmap_type="bdf", bitmap_resolution=72)
 	font.generate(fon, bitmap_type="fon", bitmap_resolution=72)
 	os.rename(bdf.replace(".bdf","-16.bdf"), bdf) # fontforge don't do that
 	outputs.append(ttf)
 	outputs.append(otf)
+	outputs.append(otb)
 	outputs.append(bdf)
 	outputs.append(fon)
 	font.close()

@@ -14,7 +14,10 @@
 # You should have received a copy of the GNU General Public License along with
 # Bombsquad. If not, see <https://www.gnu.org/licenses/>.
 
+mkdir -p build
+pushd build
 mkdir -vp upscaled
 for i in ../src/*.bmp; do magick convert "$i" -monitor -sample "800x800" "upscaled/${i##*/}"; done;
 mkdir -vp doubleheight
 for i in ../src/*.bmp; do magick convert "$i" -monitor -sample "800x1600!" "doubleheight/${i##*/}"; done;
+popd build

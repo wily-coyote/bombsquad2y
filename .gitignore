@@ -5,4 +5,5 @@ build/*.ttf
 build/*.bdf
 build/*.fon
 build/*.zip
+build/*.otb
 build/**/

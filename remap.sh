@@ -14,7 +14,6 @@
 # You should have received a copy of the GNU General Public License along with
 # Bombsquad. If not, see <https://www.gnu.org/licenses/>.
 
-mkdir -p build
-pushd build
-for i in ../src/*.bmp; do magick mogrify -monitor -define bmp:ignore-filesize=true -dither none -remap ../src/colortable.gif -colors 2 "$i"; done
+pushd src
+for i in *.bmp; do magick mogrify -monitor -define bmp:ignore-filesize=true -dither none -remap colortable.gif -colors 2 "$i"; done
 popd

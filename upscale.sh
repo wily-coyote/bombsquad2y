@@ -20,4 +20,4 @@ mkdir -vp upscaled
 for i in ../src/*.bmp; do magick convert "$i" -monitor -sample "800x800" "upscaled/${i##*/}"; done;
 mkdir -vp doubleheight
 for i in ../src/*.bmp; do magick convert "$i" -monitor -sample "800x1600!" "doubleheight/${i##*/}"; done;
-popd build
+popd

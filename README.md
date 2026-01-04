@@ -11,10 +11,8 @@ You need:
 
 In Linux (or WSL):
 ```sh
-cd build
-./remap.sh
-./upscale.sh
-./build.py
+make all
 ```
-Check for .otf/.ttf/.zip files after running.
+
+Check for font files in `build/` after running.
 

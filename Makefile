@@ -13,16 +13,24 @@
 # Bombsquad. If not, see <https://www.gnu.org/licenses/>.
 
 SHELL := /bin/bash
+.PHONY: upscale remap clean
 
 all: upscale
 	./build.py
-
-.PHONY: upscale remap clean
 
 upscale: build/upscaled/ \
 	build/doubleheight/ \
 	$(patsubst src/%.bmp,build/upscaled/%.bmp,$(wildcard src/*.bmp)) \
 	$(patsubst src/%.bmp,build/doubleheight/%.bmp,$(wildcard src/*.bmp))
+
+remap:
+	cd src; \
+	for i in *.bmp; do \
+		magick mogrify -monitor -define bmp:ignore-filesize=true -dither none -remap colortable.gif -colors 2 "$$i"; \
+	done
+
+clean:
+	rm -rf build/*
 
 build/upscaled/:
 	mkdir -p build/upscaled/
@@ -35,12 +43,3 @@ build/doubleheight/:
 
 build/doubleheight/%.bmp: src/%.bmp
 	magick convert "$<" -monitor -sample "800x1600!" "$@"
-
-remap:
-	cd src; \
-	for i in *.bmp; do \
-		magick mogrify -monitor -define bmp:ignore-filesize=true -dither none -remap colortable.gif -colors 2 "$$i"; \
-	done
-
-clean:
-	rm -rf build/*
